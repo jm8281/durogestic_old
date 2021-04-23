@@ -1,0 +1,1 @@
+2016-01-08 18:08:23: imagepng() [<a href='function.imagepng'>function.imagepng</a>]: Unable to open 'E:\www\manbing\php\public/uploadfile/ewm/qrcode.png' for writing: No such file or directory

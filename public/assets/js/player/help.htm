@@ -1,0 +1,48 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>升级文档</title>
+<style type="text/css">
+body,td,th {
+	font-size: 14px;
+	line-height: 22px;
+}
+p {
+	padding-left: 20px;
+	margin: 0px;
+	padding-top: 5px;
+	padding-bottom: 5px;
+}
+body {
+	margin-left: 0px;
+	margin-top: 0px;
+	margin-right: 0px;
+	margin-bottom: 0px;
+}
+</style>
+</head>
+
+<body>
+<p>6.5升级说明<br />
+6.4升级至6.5的方法</p>
+<p>1：替换ckplayer.swf<br />
+  2：替换ckplayer.js中的315行（(function() {）及以下的所有内容<br />
+  3：如果想在滚动文字广告使用发光滤镜，需要ckplayer.js的ckstyle()函数中和ckplayer.xml文件中增加pm_glowfilter参数。详细的可参考6.5的该函数  </p>
+<p><br />
+  本次升级因为考虑时间的问题，只对6.4版发现的bug进行修复，没有增加新的内容。一些新功能还在收集研究中。对于期待新功能的朋友说声抱歉。</p>
+<p>一：修复Bug</p>
+<p>1：修复了mp4格式在拖动时卡死的bug<br />
+  2：修复了v值在调用文件里设置无效的bug<br />
+  3：修复了加载风格文件加载进度提示的bug<br />
+  4：修复了视频加载失败继续偿试重新加 载次数的bug<br />
+5：修复了外部引用可以去掉logo的bug<br />
+6：修复了滚动文字广告在不同浏览器上效果不一致的bug
+</p>
+<p>二：新增加的内容</p>
+<p>1：增加了滚动文字广告的发光滤镜效果，需要手动开启 <br />
+  2：HTML5部份增加了对flashvars里g和j参数的支持
+</p>
+<p>感谢各位朋友对ckplayer的支持，在本次升级中，许多朋友提供了好的建议，虽然因为考虑到大部分用户的需求后决定一些功能没有对其进行更改。</p>
+</body>
+</html>

@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>ckplayer简单调用演示</title>
+<link href="http://cdn.bootcss.com/bootstrap/3.3.0/css/bootstrap.min.css" rel="stylesheet">
+ <script src="http://cdn.bootcss.com/jquery/1.11.1/jquery.min.js"></script>
+<script src="http://cdn.bootcss.com/bootstrap/3.3.0/js/bootstrap.min.js"></script>
+
+ <script src="http://cdn.bootcss.com/jquery.blockUI/2.66.0-2013.10.09/jquery.blockUI.js"></script>
+</head>
+
+<body>
+<div id="a1"></div>
+
+<script type="text/javascript" src="./ckplayer/ckplayer.js" charset="utf-8"></script>
+<script type="text/javascript">
+	var answer = {
+			
+			 question:{one:{id:'one',isAn:false,next:'two',time:5},two:{id:'two',isAn:false,next:'three',time:20}}              				//题目列表
+			,currentQues:{id:'one',isAn:false,next:'two',time:5}         				//当前题目
+			,isAllow:false           													//是否允许答题
+			,answerQues:function(){  													//答题
+				if(this.isAllow == true && this.currentQues.isAn == false){
+					this.bindClick('anBoxoneClose');
+					this.getQues();
+				}
+				
+			}
+			,setCurrentQues:function (cq){			 									//设置当前题目
+				this.currentQues = cq;
+			}
+			,allowAnswer:function(){				  									//允许答题
+				this.isAllow = true;
+			}
+			,forbiddenAnswer:function(){              									//禁止答题
+				this.isAllow = false;
+			}
+			,getQues:function(){
+				$('#anBox'+this.currentQues.id).modal('show');
+			}
+			,closeQues:function(){
+				var curques = this.question[this.currentQues.id];
+				this.currentQues.isAn = true;
+				this.forbiddenAnswer();
+				$('#anBox'+this.currentQues.id).modal('hide');
+				if(curques ){//关闭当前答题并且 设置下次答题		
+					this.question[this.currentQues.id].isAn = true;
+					this.setCurrentQues(this.question[curques.next] ?  this.question[curques.next] :null);
+				}
+			}
+			,doAnswer:function(s){//答题
+				if(s == this.currentQues.time ){
+					CKobject.getObjectById('ckplayer_a1').playOrPause();//暂停视频
+					$('#anBox'+this.currentQues.id).on('hidden.bs.modal', function (e) {
+						  //暂时不判断是否答题 ,并且提交成功
+						  answer.closeQues();
+						  CKobject.getObjectById('ckplayer_a1').playOrPause();//播放视频
+						})
+					this.allowAnswer();
+					this.answerQues();
+				}
+			}
+			,endAnswer:function(){//结束答题
+				this.closeQues();
+			}
+			,bindClick:function(bid){
+				
+				$(bid).bind('click',this.closeQues);
+			}
+	}
+	
+
+var start = false;
+function playHandler(){
+	console.log("播放了");
+}
+
+function pauseHandler(){
+
+	
+}
+function loadedHandler(){
+    if(CKobject.getObjectById('ckplayer_a1').getType()){
+    	//添加监听handler
+        CKobject.getObjectById('ckplayer_a1').addListener('play',playHandler);
+        CKobject.getObjectById('ckplayer_a1').addListener('pause',pauseHandler);
+    }
+    else{
+        //添加监听handler
+        CKobject.getObjectById('ckplayer_a1').addListener('play','playHandler');
+        CKobject.getObjectById('ckplayer_a1').addListener('pause','pauseHandler');
+    }
+}
+	var flashvars={
+		f:'test.flv',
+		c:0,
+		//b:1,
+		loaded:'loadedHandler',
+		};
+	var video=['http://movie.ks.js.cn/flv/other/1_0.mp4->video/mp4','http://www.ckplayer.com/webm/0.webm->video/webm','http://www.ckplayer.com/webm/0.ogv->video/ogg'];
+	CKobject.embed('./ckplayer/ckplayer.swf','a1','ckplayer_a1','600','400',false,flashvars,video)
+	
+	
+	function ckplayer_status(str){
+		var ss = parseInt(str.replace('time:', ''));
+		answer.doAnswer(ss);		
+	}
+
+	
+
+  </script>
+  
+  <button onclick="stop()">获取时间</button>
+  <input type="button" name="button7" value="播放/暂停" onClick="CKobject.getObjectById('ckplayer_a1').playOrPause();" />
+  
+  
+  <div class="modal fade" id="anBoxone" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+        	问题一
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-default" id="anBoxoneClose">Close</button> -->
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+  <div class="modal fade" id="anBoxtwo" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Modal title</h4>
+      </div>
+      <div class="modal-body">
+       		问题二	
+      </div>
+      <div class="modal-footer">
+         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <!--<button type="button" class="btn btn-default" id="anBoxoneClose">Close</button> -->
+        <button type="button" class="btn btn-primary">Save changes</button>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
